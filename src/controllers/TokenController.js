@@ -27,7 +27,7 @@ module.exports = {
         });
     }
 
-    const {id} = user; //id do usuario
+    const {id} = user; //id 
     const token = jwt.sign({id, email}, process.env.TOKEN_SECRET, {
         expiresIn: process.env.TOKEN_EXPIRATION, 
     });

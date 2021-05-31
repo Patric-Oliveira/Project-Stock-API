@@ -36,7 +36,7 @@ class Employees extends Model {
                 },
             },
             phone: {
-                type: DataTypes.BIGINT,
+                type: DataTypes.STRING,
                 defaultValue: '',
                 validate: {
                     len: {
@@ -46,12 +46,12 @@ class Employees extends Model {
                 },
             },
             cpf: {
-                type: DataTypes.BIGINT,
+                type: DataTypes.STRING,
                 defaultValue: '',
                 validate: {
                     len: {
-                        args: [14, 14],
-                        msg: 'CPF precisa ter 14 caracteres',
+                        args: [11, 14],
+                        msg: 'CPF precisa ter entre 11 a 14 caracteres',
                     },
                 },
             },
@@ -66,11 +66,12 @@ class Employees extends Model {
                 },
             },
             cep: {
-                type: DataTypes.INTEGER,
+                type: DataTypes.STRING,
                 defaultValue: '',
                 validate: {
-                    IsInt: {
-                        msg: 'CEP precisa ser um numero inteiro',
+                    len: {
+                        args: [8, 14],
+                        msg: 'CEP precisa ter entre 8 a 14 caracteres',
                     },
                 },
             },
@@ -108,6 +109,9 @@ class Employees extends Model {
             sequelize,
         });
         return this;
+    }
+    static associate(models) {
+        this.hasMany(models.Photo, {foreignKey: 'employess_id'}); 
     }
 }
 

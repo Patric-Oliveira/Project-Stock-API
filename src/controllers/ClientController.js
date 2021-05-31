@@ -1,19 +1,15 @@
-const Employee = require('../models/Employee');
-const { store } = require('./TokenController');
-const Photo = require('../models/Photo');
+const Client = require('../models/Client');
+
 
 module.exports = {
 
+    // Index
     async index(req, res) {
-        const employees = await Employee.findAll({
-            attributes: ['id', 'name', 'surname', 'email', 'phone', 'cpf', 'address', 'cep', 'district', 'city', 'uf' ],
-            order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
-            include: {
-                model: Photo,
-                attributes: ['id', 'originalname', 'filename', 'url']
-            },
+        const clients = await Client.findAll({
+            attributes: ['id', 'name', 'surname', 'email', 'phone', 'cpf', 'address', 'cep', 'district', 'city', 'uf'],
+            order: [['id', 'DESC']],
         });
-        res.json(employees)
+        res.json(clients);
     },
 
     //Show
@@ -27,21 +23,14 @@ module.exports = {
                 });
             }
 
-            const employee = await Employee.findByPk(id, {
-                attributes: ['id', 'name', 'surname', 'email', 'phone', 'cpf', 'address', 'cep', 'district', 'city', 'uf' ],
-                order: [['id', 'DESC'], [Photo, 'id', 'DESC']],
-                include: {
-                    model: Photo,
-                    attributes: ['id', 'originalname', 'filename', 'url']
-                },
-            })
+            const client = await Client.findByPk(id)
 
-            if(!employee) {
+            if(!client) {
                 return res.status(400).json({
-                    errors: ['Funcionario não existe'],
+                    errors: ['Cliente não existe'],
                 });
             }
-            return res.json(employee)
+            return res.json(client);
         } catch (e) {
             return res.status(400).json({
                 errors: e.errors.map((err) => err.message),
@@ -49,12 +38,11 @@ module.exports = {
         }
     },
 
-    
     //Store
     async store(req, res) {
         try {
-          const employee = await Employee.create(req.body);
-            return res.json(employee)
+            const client = await Client.create(req.body);
+            return res.json(client);
         } catch (e) {
             return res.status(400).json({
                 errors: e.errors.map((err) => err.message),
@@ -62,7 +50,6 @@ module.exports = {
         }
     },
 
-    
     //Update
     async update(req, res) {
         try {
@@ -74,27 +61,25 @@ module.exports = {
                 });
             }
 
-            const employee = await Employee.findByPk(id)
+            const client = await Client.findByPk(id)
 
-            if(!employee) {
+            if(!client) {
                 return res.status(400).json({
-                    errors: ['Funcionario não existe'],
+                    errors: ['Cliente não existe'],
                 });
             }
-            
-            const employeeUpdate = await employee.update(req.body)
 
-            return res.json(employeeUpdate)
+            const clientUpdate = await client.update(req.body)
+            return res.json(clientUpdate)
         } catch (e) {
             return res.status(400).json({
                 errors: e.errors.map((err) => err.message),
             });
         }
     },
-    
 
     //Delete
-    async delete(req, res) {
+    async delete(req, re) {
         try {
             const {id} = req.params;
 
@@ -104,16 +89,16 @@ module.exports = {
                 });
             }
 
-            const employee = await Employee.findByPk(id)
+            const client = await Client.findByPk(id)
 
-            if(!employee) {
+            if(!client) {
                 return res.status(400).json({
-                    errors: ['Funcionario não existe'],
+                    errors: ['Cliente não existe'],
                 });
             }
-            await employee.destroy();
+            await client.destroy();
             return res.json({
-                Deletado: true,
+                apagado: true,
             });
         } catch (e) {
             return res.status(400).json({
@@ -121,5 +106,7 @@ module.exports = {
             });
         }
     },
+
+
 
 }

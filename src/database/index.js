@@ -1,10 +1,16 @@
 const Sequelize =  require('sequelize');
 const dbConfig = require('../config/database');
 
+const User = require('../models/User');
 const Employees = require('../models/Employee');
-const User = require('../models/User')
+const Client = require('../models/Client');
+const OrderService = require('../models/OrderService');
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+const Photo = require('../models/Photo');
 
-const models = [Employees, User]
+
+const models = [User, Employees, Client, OrderService, Product, Category, Photo]
 
 const connection = new Sequelize(dbConfig);
 try {
@@ -15,6 +21,7 @@ try {
 }
 
 models.forEach((model) => model.init(connection));
+models.forEach((model) => model.associate && model.associate(connection.models));
 
 
-module.exports = connection;
+module.exports = connection, connection.models;

@@ -2,7 +2,7 @@
 module.exports = {
 
   async index(req, res) {
-        res.status(200).json('Index');
+        res.status(200).json('Bem Vindo - Stock');
     }
 
 }
